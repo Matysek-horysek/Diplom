@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diplom na A4</title>
+    <style>
+        /* Import elegantního fontu z Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400&display=swap');
+
+        body {
+            /* Tmavé pozadí mimo dokument (pro zobrazení na obrazovce) */
+            background-color: #333639;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Hlavní kontejner představující papír A4 */
+        .diplom-kontejner {
+            background-color: #ffffff; /* Čistě bílé pozadí */
+            width: 210mm;
+            height: 297mm;
+            box-sizing: border-box;
+            
+            /* Dvojitý rámeček pomocí border a box-shadow (nebo outline) */
+            border: 4mm solid #8e44ad; /* Vnější silný fialový rámeček */
+            outline: 1mm solid #9b59b6; /* Vnitřní tenčí rámeček */
+            outline-offset: -8mm;
+            
+            padding: 60px;
+            position: relative; /* Pro absolutní pozicování dekorací */
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            
+            /* Jemný fialový nádech na pozadí pomocí radiálního gradientu uprostřed */
+            background-image: radial-gradient(circle at center, #faf5fc 0%, #ffffff 60%);
+        }
+
+        /* Rohové dekorace */
+        .rozek {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #8e44ad;
+        }
+        .rozek.vlevo-nahore { top: 15mm; left: 15mm; border-right: none; border-bottom: none; }
+        .rozek.vpravo-nahore { top: 15mm; right: 15mm; border-left: none; border-bottom: none; }
+        .rozek.vlevo-dole { bottom: 15mm; left: 15mm; border-right: none; border-top: none; }
+        .rozek.vpravo-dole { bottom: 15mm; right: 15mm; border-left: none; border-top: none; }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            color: #8e44ad; /* Fialový nadpis */
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .podnadpis {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #7f8c8d;
+            margin-bottom: 60px;
+            font-style: italic;
+        }
+
+        .text-pro {
+            font-size: 22px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .jmeno {
+            font-family: 'Playfair Display', serif;
+            font-size: 65px;
+            color: #2c3e50; /* Tmavě modro-šedá pro kontrast */
+            font-weight: 700;
+            margin: 10px 0 50px 0;
+            border-bottom: 2px solid #8e44ad;
+            padding-bottom: 10px;
+            display: inline-block;
+            min-width: 60%;
+        }
+
+        .text-duvod {
+            font-size: 28px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 80%;
+        }
+
+        /* --- Vlastní CSS smajlík s otazníky v levém dolním rohu --- */
+        .peeking-emoji-container {
+            position: absolute;
+            bottom: 20mm; /* Umístění v levém dolním rohu */
+            left: 15mm;
+            width: 250px;
+            height: 250px;
+            /* Zrotujeme ho, aby to vypadalo, že vykukuje */
+            transform: rotate(15deg);
+            z-index: 10; /* Aby byl nad pozadím */
+        }
+
+        /* Svatozář - záchytný bod ukotvený doprostřed obličeje smajlíka */
+        .halo-otazniky {
+            position: absolute;
+            bottom: 75px; /* Smajlík má 150px výšku, 75px je jeho střed */
+            left: 50%;
+            width: 0;
+            height: 0;
+            z-index: 15; /* Musí být nad smajlíkem */
+        }
+        
+        /* Jednotlivé otazníky ve svatozáři */
+        .halo-q {
+            position: absolute;
+            color: #e74c3c; /* Červená barva */
+            font-size: 40px; /* Větší a jasně viditelné */
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.9);
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            left: -20px; /* Vycentrování přímo na souřadnici 0,0 */
+            top: -20px;
+        }
+
+        /* Odsuneme je od středu hlavy ven o 110px nahoru a zrotujeme je do půlkruhu */
+        /* Protože má smajlík poloměr 75px, budou krásně 35px nad jeho hlavou */
+        .halo-q:nth-child(1) { transform: rotate(-75deg) translateY(-110px); }
+        .halo-q:nth-child(2) { transform: rotate(-45deg) translateY(-110px); }
+        .halo-q:nth-child(3) { transform: rotate(-15deg) translateY(-110px); }
+        .halo-q:nth-child(4) { transform: rotate(15deg) translateY(-110px); }
+        .halo-q:nth-child(5) { transform: rotate(45deg) translateY(-110px); }
+        .halo-q:nth-child(6) { transform: rotate(75deg) translateY(-110px); }
+        
+        .vlastni-smajlik {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #fef160, #f1c40f);
+            border-radius: 50%;
+            box-shadow: 
+                inset -10px -10px 20px rgba(0,0,0,0.1),
+                0 10px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .oci-kontejner {
+            display: flex;
+            gap: 2px; /* Oči velmi blízko sebe */
+            margin-bottom: 5px;
+            margin-top: -10px;
+        }
+
+        .oko-otaznik {
+            font-size: 35px; /* Menší otazníky jako oči */
+            color: #e74c3c; /* Červené oči */
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #c0392b;
+            line-height: 1;
+        }
+
+        /* Otevřený úsměv */
+        .usmev {
+            width: 60px;
+            height: 35px;
+            background-color: #8e44ad; /* Fialový vnitřek úst */
+            border-radius: 0 0 60px 60px; /* Tvar pusy do tvaru D (půlkruh) */
+            margin-top: 5px;
+            position: relative;
+            overflow: hidden; /* Zajistí, že jazyk nepřesáhne okraj úst */
+        }
+
+        /* Detail jazyka uvnitř úsměvu */
+        .usmev::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 20px;
+            background-color: #ff4757; /* Červená barva jazyka */
+            border-radius: 50%;
+        }
+        /* ------------------------------------------------------------- */
+
+        .datum {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #8e44ad; /* Sladěno s diplomem */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-tisk:hover {
+            background-color: #732d91;
+            transform: translateY(-2px);
+        }
+
+        /* Pravidla pro tisk (a uložení do PDF) */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .diplom-kontejner {
+                box-shadow: none; /* Odstraníme stín, nemá smysl při tisku */
+                background-image: radial-gradient(circle at center, #faf5fc 0%, #ffffff 60%) !important;
+            }
+
+            .btn-tisk {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-tisk" onclick="window.print()">🖨️ Stáhnout jako PDF / Vytisknout</button>
+
+    <div class="diplom-kontejner">
+        <!-- Dekorativní rohy -->
+        <div class="rozek vlevo-nahore"></div>
+        <div class="rozek vpravo-nahore"></div>
+        <div class="rozek vlevo-dole"></div>
+        <div class="rozek vpravo-dole"></div>
+
+        <h1>DIPLOM</h1>
+
+        <div class="text-pro">Uděluje se</div>
+        <div class="jmeno">Terezii</div>
+
+        <div class="text-duvod">
+            za velikou pozornost při chatovaní a pohotové reakce na špatný ? a rovnou pohotové opravení na 
+            <span class="emoji cerveny-otaznik">❓</span>
+        </div>
+
+        <!-- Vykukující smajlík se svatozáří z otazníků -->
+        <div class="peeking-emoji-container">
+            <div class="halo-otazniky">
+                <!-- Vytvoříme půlkruh otazníků tvořící svatozář -->
+                <div class="halo-q">?</div>
+                <div class="halo-q">?</div>
+                <div class="halo-q">?</div>
+                <div class="halo-q">?</div>
+                <div class="halo-q">?</div>
+                <div class="halo-q">?</div>
+            </div>
+            <div class="vlastni-smajlik">
+                <div class="oci-kontejner">
+                    <div class="oko-otaznik">❓</div>
+                    <div class="oko-otaznik">❓</div>
+                </div>
+                <div class="usmev"></div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
