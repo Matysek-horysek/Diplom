@@ -249,6 +249,29 @@
                 display: none;
             }
         }
+
+        /* Úprava pro mobily - zmenší celý diplom, aby se vešel na displej */
+        @media screen and (max-width: 850px) {
+            .diplom-kontejner {
+                zoom: 0.6; /* Pro tablety a menší monitory */
+            }
+        }
+        
+        @media screen and (max-width: 600px) {
+            .diplom-kontejner {
+                zoom: 0.45; /* Pro větší mobily */
+            }
+        }
+        
+        @media screen and (max-width: 400px) {
+            .diplom-kontejner {
+                zoom: 0.35; /* Pro menší mobily */
+            }
+            body {
+                padding: 10px; /* Zmenší okraje kolem diplomu na mobilu */
+            }
+        }
+
     </style>
 </head>
 <body>
